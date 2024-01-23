@@ -1,6 +1,6 @@
 import { Button, Typography } from "@mui/material";
 import { useConnect } from "wagmi";
-import { Link } from "@imtbl/imx-sdk";
+import { Link, ProviderPreference } from "@imtbl/imx-sdk";
 import { useContract } from "@/components/ContractProvider";
 
 const styles = {
@@ -18,7 +18,7 @@ const ConnectWalletButton = (): JSX.Element => {
 	const { setLink } = useContract();
 
 	async function setupAccount() {
-		const { address, starkPublicKey } = await link.setup({});
+		const { address, starkPublicKey } = await link.setup({ providerPreference: ProviderPreference.NONE });
 		localStorage.setItem("WALLET_ADDRESS", address);
 		localStorage.setItem("STARK_PUBLIC_KEY", starkPublicKey);
 		setLink(link);

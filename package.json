@@ -12,7 +12,8 @@
 		"lint:code:fix": "next lint --fix",
 		"lint:formatting": "prettier . --check",
 		"lint:formatting:fix": "prettier . --write --log-level=silent",
-		"postinstall": "husky install"
+		"postinstall": "husky install",
+		"mint": "ts-node src/scripts/mint.ts"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.11.1",
@@ -46,6 +47,7 @@
 		"eslint-plugin-prettier": "^5.0.0",
 		"eslint-plugin-simple-import-sort": "^10.0.0",
 		"husky": "^8.0.0",
-		"prettier": "^3.0.3"
+		"prettier": "^3.0.3",
+		"ts-node": "^10.9.2"
 	}
 }

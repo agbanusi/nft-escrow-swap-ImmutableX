@@ -103,7 +103,7 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }: 
 		if (walletClient && publicClient) {
 			setNft(
 				getContract({
-					address: CONTRACTS.SEPOLIA.NFT_COLLECTION.ADDRESS,
+					address: CONTRACTS.SEPOLIA.NFT_COLLECTION.ADDRESS as Address,
 					abi: CONTRACTS.SEPOLIA.NFT_COLLECTION.ABI,
 					publicClient,
 					walletClient,

@@ -1,8 +1,15 @@
 // pages/index.js
 "use client";
 
-import { useState } from "react";
-import { createOrder, takeOrder, fulfillOrder } from "../utils/immutable-x";
+import { useEffect, useState } from "react";
+import {
+	createOrder,
+	takeOrder,
+	fulfillOrder,
+	getAvailableClaims,
+	getIMXRequests,
+	receiveAsset,
+} from "../utils/immutable-x";
 import Transfer from "../utils/transfer";
 import { useContract } from "@/components/ContractProvider";
 import { CONTRACTS } from "@/constants";
@@ -10,12 +17,33 @@ import { CONTRACTS } from "@/constants";
 export default function Home() {
 	const [playerAAsset, setPlayerAAsset] = useState("");
 	const [playerBAsset, setPlayerBAsset] = useState("");
+	const [swaps, setSwaps] = useState([]);
+	const [claims, setClaims] = useState([]);
 	const { link } = useContract();
 	const nft = CONTRACTS.SEPOLIA.NFT_COLLECTION.ADDRESS;
 
+	const fetchData = async () => {
+		const swapsData = await getIMXRequests();
+		const claimsData = await getAvailableClaims(localStorage.getItem("WALLET_ADDRESS") as string);
+		setSwaps(swapsData);
+		setClaims(claimsData);
+	};
+
+	useEffect(() => {
+		fetchData();
+
+		const intervalId = setInterval(
+			() => {
+				fetchData();
+			},
+			1 * 60 * 1000,
+		);
+
+		return () => clearInterval(intervalId);
+	}, []);
+
 	const handleProposeTrade = async () => {
 		// Create order on Immutable X for player A
-		console.log("teet");
 		await createOrder(link, nft as string, playerAAsset, playerBAsset);
 	};
 
@@ -65,7 +93,34 @@ export default function Home() {
 			<div style={{ marginTop: "40px" }}>
 				<h2 style={{ marginBottom: "15px" }}>Get List of Swap Proposals</h2>
 				<div>
-					{Object.values(Transfer).map((txn: any, i: number) => (
+					{Object.values(swaps)
+						?.filter((txn: any) => txn.status != "success")
+						.map((txn: any, i: number) => (
+							<div key={"key-" + i}>
+								<hr
+									style={{
+										width: "100%",
+										marginTop: "5px",
+										marginBottom: "5px",
+										borderBottomWidth: "1.5px",
+										borderColor: "grey",
+									}}
+								/>
+								<h4> NFT ADDRESS: {nft}</h4>
+								<h4>
+									Swap Token {txn.players.playerA.tokenId} for {txn.players.playerB.tokenId}
+								</h4>
+								<p>Status: started</p>
+								<button onClick={() => handleAcceptTrade(txn.orderId)}>Accept Trade</button>
+							</div>
+						))}
+				</div>
+			</div>
+
+			<div style={{ marginTop: "40px" }}>
+				<h2 style={{ marginBottom: "15px" }}>Get List of Available Claims</h2>
+				<div>
+					{claims?.map((txn: any, i: number) => (
 						<div key={"key-" + i}>
 							<hr
 								style={{
@@ -76,12 +131,10 @@ export default function Home() {
 									borderColor: "grey",
 								}}
 							/>
-							<h4> NFT ADDRESS: {nft}</h4>
 							<h4>
-								Swap Token {txn.players.playerA.tokenId} for {txn.players.playerB.tokenId}
+								Claim Token {txn.tokenAddress} with Id {txn.tokenId} from previous swap transaction request
 							</h4>
-							<p>Status: started</p>
-							<button onClick={() => handleAcceptTrade(txn.orderId)}>Accept Trade</button>
+							<button onClick={() => receiveAsset(link, txn.tokenAddress, txn.orderId)}>Accept Token</button>
 						</div>
 					))}
 				</div>

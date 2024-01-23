@@ -5,7 +5,7 @@ import { simpleNftABI } from "../../abis/SimpleNFT";
 import { providers } from "ethers";
 
 export type ContractABIPair = {
-	ADDRESS: Address;
+	ADDRESS: string | Address;
 	ABI: Abi;
 };
 
