@@ -10,12 +10,12 @@ import {
 	polygonMumbai,
 	sepolia,
 } from "wagmi/chains";
-import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
+// import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
 import { InjectedConnector } from "wagmi/connectors/injected";
-import { LedgerConnector } from "wagmi/connectors/ledger";
+// import { LedgerConnector } from "wagmi/connectors/ledger";
 import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
-import { alchemyProvider } from "wagmi/providers/alchemy";
-import { infuraProvider } from "wagmi/providers/infura";
+// import { alchemyProvider } from "wagmi/providers/alchemy";
+// import { infuraProvider } from "wagmi/providers/infura";
 import { publicProvider } from "wagmi/providers/public";
 
 // WalletConnect options
@@ -56,13 +56,13 @@ const connectors: Connector[] = [
 			shimDisconnect: true,
 		},
 	}),
-	new LedgerConnector({
-		chains,
-		options: {
-			projectId: `${process.env.NEXT_PUBLIC_LEDGER_PROJECT_ID}`,
-		},
-	}),
-	new CoinbaseWalletConnector({ chains, options: { appName: metadata.name } }),
+	// new LedgerConnector({
+	// 	chains,
+	// 	options: {
+	// 		projectId: `${process.env.NEXT_PUBLIC_LEDGER_PROJECT_ID}`,
+	// 	},
+	// }),
+	// new CoinbaseWalletConnector({ chains, options: { appName: metadata.name } }),
 ];
 
 // Stitch together the wagmi config
