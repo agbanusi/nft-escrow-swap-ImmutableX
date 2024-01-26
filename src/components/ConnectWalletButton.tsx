@@ -18,7 +18,7 @@ const ConnectWalletButton = (): JSX.Element => {
 	const { setLink } = useContract();
 
 	async function setupAccount() {
-		const { address, starkPublicKey } = await link.setup({ providerPreference: ProviderPreference.NONE });
+		const { address, starkPublicKey } = await link.setup({});
 		localStorage.setItem("WALLET_ADDRESS", address);
 		localStorage.setItem("STARK_PUBLIC_KEY", starkPublicKey);
 		setLink(link);
