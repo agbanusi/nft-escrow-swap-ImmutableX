@@ -1,5 +1,4 @@
 import { Button, Typography } from "@mui/material";
-import { useConnect } from "wagmi";
 import { Link, ProviderPreference } from "@imtbl/imx-sdk";
 import { useContract } from "@/components/ContractProvider";
 
@@ -13,7 +12,6 @@ const styles = {
 };
 
 const ConnectWalletButton = (): JSX.Element => {
-	const { error } = useConnect();
 	const link = new Link("https://link.sandbox.x.immutable.com");
 	const { setLink } = useContract();
 
@@ -27,11 +25,6 @@ const ConnectWalletButton = (): JSX.Element => {
 
 	return (
 		<>
-			{error && (
-				<Typography color="error" mr={2}>
-					{error.message}
-				</Typography>
-			)}
 			<Button
 				id="connect-wallet-button"
 				variant="contained"
